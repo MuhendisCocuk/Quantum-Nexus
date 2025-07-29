@@ -41,7 +41,7 @@ const searchResultsContent = document.getElementById("searchResultsContent");
 // *** YENİ: Harici JSON dosyalarından yüklenecek birleşik veri ***
 let allSearchableData = [];
 // *** YENİ: Yüklenecek JSON dosyalarının listesi ***
-const jsonFiles = ['data1.json', 'data2.json', 'data3.json']; // Buraya tüm JSON dosyalarınızın adlarını ekleyin
+const jsonFiles = ['data1.json', 'data2.json', 'data3.json, data4.json, data5.json, data6.json']; // Buraya tüm JSON dosyalarınızın adlarını ekleyin
 
 // Harici JSON dosyalarını yükleyen fonksiyon
 async function loadAllExternalData() {
