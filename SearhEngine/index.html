@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>🌌 Arama 2100 - Quantum Nexus</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="galaxy-bg"></div>
+
+<header>
+  <h1>🌌 QUANTUM NEXUS</h1>
+</header>
+
+<div id="fixedSearch">
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Zaman çizgisinde ara..." autocomplete="off" />
+    <button class="search-btn" id="searchBtn">Ara</button>
+  </div>
+</div>
+
+<main>
+  <section id="homepageContent">
+    <h2 class="section-title">Gündemdeki Gelecek Haberleri</h2>
+    <div id="newsList"></div>
+    <div id="loader">Yeni haberler yükleniyor...</div>
+
+    <div id="trending-topics">
+      <h2>✨ Trend Olanlar</h2>
+      <div class="trend-list" id="trendList">
+        </div>
+    </div>
+  </section>
+
+  <section id="searchResultsContent" style="display: none;">
+    <h2 class="section-title">Arama Sonuçları</h2>
+    <div id="searchLoader">Kuantum arama motoru çalışıyor...</div>
+    <div id="results"></div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
