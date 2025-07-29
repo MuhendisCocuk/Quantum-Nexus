@@ -124,6 +124,7 @@ header.shrink + #fixedSearch { /* Header küçülünce arama kutusunu da yukarı
   gap: 15px; /* Boşluk artırıldı */
   flex-wrap: wrap;
   padding: 0 20px; /* Kenarlardan boşluk */
+  position: relative; /* Öneri kutusu için relative */
 }
 #searchInput {
   flex: 1 1 350px; /* Daha esnek ve geniş */
@@ -179,6 +180,43 @@ button.search-btn:hover {
 }
 button.search-btn:active {
   transform: scale(0.96);
+}
+
+/* --- Arama Önerileri Kutusu --- */
+.suggestion-box {
+  position: absolute; /* search-container'a göre konumlanacak */
+  top: calc(16px + 22px + 15px + 16px); /* searchInput yüksekliği (padding dahil) + gap + button height (rough) */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px); /* search-container padding'i kadar içeride */
+  max-width: 350px; /* searchInput ile aynı max-width */
+  background: rgba(0, 0, 0, 0.9); /* Arka plan rengi */
+  border: 1px solid #00fff788;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 247, 0.4);
+  z-index: 1000; /* Diğer elementlerin üstünde olsun */
+  max-height: 200px; /* Belirli bir yükseklikten sonra kaydırılabilir */
+  overflow-y: auto; /* İçerik taşarsa kaydırma çubuğu */
+  display: none; /* Başlangıçta gizli */
+  padding: 8px 0;
+}
+
+.suggestion-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  color: #e0f7fa;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-bottom: 1px solid rgba(0, 255, 247, 0.1);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none; /* Son öğede çizgi olmasın */
+}
+
+.suggestion-item:hover {
+  background-color: rgba(0, 255, 247, 0.2);
+  color: #00fff7;
 }
 
 /* --- Main Container --- */
@@ -315,7 +353,7 @@ header.shrink + #fixedSearch + main {
   margin-top: 25px;
   display: grid; /* Grid düzenine geçiş */
   grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); /* Her satırda 2 öğe (min 350px) */
-  row-gap: 30px; 
+  row-gap: 30px;
   column-gap: 30px;
   justify-content: center; /* Ortala */
   align-items: start; /* Öğeleri en üste hizala */
@@ -337,7 +375,7 @@ header.shrink + #fixedSearch + main {
   animation: slideIn 0.6s ease-out forwards;
   min-height: 120px; /* Minimum yüksekliği korumak isterseniz */
 
-  
+
   aspect-ratio: 2 / 1; /* Genişliğin yüksekliğe oranı 2:1 (örneğin 700px genişlikte 350px yükseklik sağlar) */
 
   display: flex;
@@ -498,6 +536,11 @@ header.shrink + #fixedSearch + main {
   #results {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+  .suggestion-box {
+    width: calc(100% - 30px); /* Mobil görünümde daha geniş */
+    max-width: none; /* Max genişliği kaldır */
+    top: calc(16px + 22px + 10px + 14px); /* Mobil için top değerini ayarla */
   }
 }
 
