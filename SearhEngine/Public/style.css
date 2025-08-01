@@ -1,0 +1,597 @@
+/* --- Temel Reset & Body --- */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0; padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background: #000; /* Başlangıç arka planı */
+  color: #e0f7fa;
+  min-height: 100vh; /* Minimum yükseklik */
+  overflow-x: hidden; /* Yatay kaydırmayı engelle */
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #00fff7 transparent;
+  transition: background-color 0.8s ease; /* Daha yumuşak geçiş */
+  position: relative; /* Arka plan efektleri için */
+}
+
+/* Scrollbar (Webkit) */
+body::-webkit-scrollbar {
+  width: 10px;
+}
+body::-webkit-scrollbar-track {
+  background: transparent;
+}
+body::-webkit-scrollbar-thumb {
+  background: #00fff7;
+  border-radius: 5px;
+  box-shadow: inset 0 0 5px #00fff7aa;
+}
+
+/* Parçacık Arka Plan */
+#galaxy-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.2; /* Arka plan daha soluk */
+  background: radial-gradient(circle at center, rgba(0,255,247,0.05) 0%, rgba(0,0,0,0.8) 70%);
+  animation: galaxyZoom 60s infinite alternate linear;
+}
+
+@keyframes galaxyZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+.star {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  animation: twinkle 5s infinite ease-in-out alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0; transform: scale(0.5); }
+  50% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.5); }
+}
+
+/* --- Header --- */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 70px; /* Biraz daha yüksek */
+  background: rgba(0,0,0,0.5); /* Daha koyu ve şeffaf */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px #00fff7aa;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Başlığı ortala */
+  padding: 0 30px;
+  z-index: 999;
+  transition: height 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+}
+header.shrink {
+  height: 55px; /* Küçülme yüksekliği */
+  background: rgba(0,0,0,0.3);
+  box-shadow: 0 0 15px #00fff7aa;
+}
+
+header h1 {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: 1.8rem; /* Daha büyük */
+  color: #00fff7;
+  user-select: none;
+  letter-spacing: 0.15em;
+  text-shadow:
+    0 0 10px #00fff7,
+    0 0 20px #00fff7;
+  transition: font-size 0.4s ease, text-shadow 0.4s ease;
+}
+header.shrink h1 {
+  font-size: 1.5rem;
+}
+
+/* --- Sabit Arama Bölümü --- */
+#fixedSearch {
+  position: fixed;
+  top: 70px; /* Header yüksekliği kadar aşağıda başla */
+  left: 0; right: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  padding: 20px 0; /* İç boşluk */
+  z-index: 998; /* Header'ın altında kalacak */
+  box-shadow: 0 5px 20px rgba(0, 255, 247, 0.3);
+  transition: top 0.4s ease, background 0.4s ease, padding 0.4s ease;
+}
+header.shrink + #fixedSearch { /* Header küçülünce arama kutusunu da yukarı çek */
+  top: 55px;
+  padding: 15px 0;
+}
+
+.search-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Boşluk artırıldı */
+  flex-wrap: wrap;
+  padding: 0 20px; /* Kenarlardan boşluk */
+  position: relative; /* Öneri kutusu için relative */
+}
+#searchInput {
+  flex: 1 1 350px; /* Daha esnek ve geniş */
+  padding: 16px 22px; /* Daha dolgun */
+  border-radius: 45px; /* Daha oval */
+  border: none;
+  font-size: 1.25rem; /* Daha büyük */
+  color: #00fff7;
+  background: rgba(255, 255, 255, 0.12); /* Daha belirgin */
+  box-shadow:
+    inset 0 0 18px #00fff7aa;
+  outline: none;
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+  font-weight: 600;
+  text-shadow: 0 0 8px #00fff7cc;
+}
+#searchInput::placeholder {
+  color: #60e5ffaa;
+  font-style: italic;
+  text-shadow: none;
+  transition: all 0.3s ease;
+}
+#searchInput:focus {
+  background: rgba(255, 255, 255, 0.2); /* Focus'ta daha belirgin */
+  box-shadow:
+    inset 0 0 30px #00fff7ff,
+    0 0 15px #00fff7ff;
+  color: #00fff7;
+}
+#searchInput:focus::placeholder {
+  opacity: 0.7;
+  transform: translateX(5px);
+}
+
+button.search-btn {
+  background: linear-gradient(45deg, #00fff7, #00c6ff);
+  border: none;
+  padding: 16px 32px; /* Daha dolgun */
+  font-weight: 700;
+  font-size: 1.15rem; /* Daha büyük */
+  color: #000;
+  border-radius: 40px; /* Daha oval */
+  box-shadow:
+    0 6px 20px #00fff7aa;
+  cursor: pointer;
+  transition: background 0.4s ease, box-shadow 0.4s ease, transform 0.15s ease;
+  user-select: none;
+}
+button.search-btn:hover {
+  background: linear-gradient(45deg, #00c6ff, #00fff7);
+  box-shadow:
+    0 8px 30px #00c6ffcc;
+}
+button.search-btn:active {
+  transform: scale(0.96);
+}
+
+/* --- Arama Önerileri Kutusu --- */
+.suggestion-box {
+  position: absolute; /* search-container'a göre konumlanacak */
+  top: calc(16px + 22px + 15px + 16px); /* searchInput yüksekliği (padding dahil) + gap + button height (rough) */
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px); /* search-container padding'i kadar içeride */
+  max-width: 350px; /* searchInput ile aynı max-width */
+  background: rgba(0, 0, 0, 0.9); /* Arka plan rengi */
+  border: 1px solid #00fff788;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 247, 0.4);
+  z-index: 1000; /* Diğer elementlerin üstünde olsun */
+  max-height: 200px; /* Belirli bir yükseklikten sonra kaydırılabilir */
+  overflow-y: auto; /* İçerik taşarsa kaydırma çubuğu */
+  display: none; /* Başlangıçta gizli */
+  padding: 8px 0;
+}
+
+.suggestion-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  color: #e0f7fa;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-bottom: 1px solid rgba(0, 255, 247, 0.1);
+}
+
+.suggestion-item:last-child {
+  border-bottom: none; /* Son öğede çizgi olmasın */
+}
+
+.suggestion-item:hover {
+  background-color: rgba(0, 255, 247, 0.2);
+  color: #00fff7;
+}
+
+/* --- Main Container --- */
+main {
+  max-width: 800px;
+  /* Header ve sabit arama kutusunun toplam yüksekliği kadar boşluk bırak */
+  margin: calc(70px + 70px + 30px) auto 60px; /* Header (70px) + FixedSearch içeriği (yaklaşık 70px) + Ek boşluk (30px) */
+  padding: 0 20px;
+  position: relative;
+  z-index: 1; /* Diğer elementlerin altında kalmalı */
+}
+/* Header küçüldüğünde main margin-top'ını güncelle */
+header.shrink + #fixedSearch + main {
+  margin-top: calc(55px + 60px + 20px); /* Küçülmüş Header (55px) + Küçülmüş FixedSearch içeriği (yaklaşık 60px) + Ek boşluk (20px) */
+}
+
+
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.2rem;
+  color: #00fff7;
+  text-align: center;
+  margin-bottom: 40px;
+  margin-top: 30px;
+  letter-spacing: 0.08em;
+  text-shadow:
+    0 0 10px #00fff7,
+    0 0 25px #00fff7aa;
+  position: relative;
+  padding-bottom: 10px;
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: #00fff7;
+  box-shadow: 0 0 10px #00fff7;
+  border-radius: 2px;
+}
+
+/* Trend Bölümü */
+#trending-topics {
+  margin-top: 50px;
+  margin-bottom: 60px;
+  padding: 30px;
+  background: rgba(0, 255, 247, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 255, 247, 0.2);
+  border: 1px solid rgba(0, 255, 247, 0.3);
+  animation: fadeIn 1s ease-out;
+}
+
+#trending-topics h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.8rem;
+  color: #00fff7;
+  text-align: center;
+  margin-bottom: 25px;
+  text-shadow: 0 0 10px #00fff7aa;
+}
+
+.trend-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.trend-tag {
+  background: rgba(0, 255, 247, 0.2);
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #00fff7;
+  cursor: pointer;
+  border: 1px solid #00fff766;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  text-shadow: 0 0 5px #00fff7aa;
+}
+.trend-tag:hover {
+  background: rgba(0, 255, 247, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 15px #00fff7aa;
+}
+
+.news-item {
+  background: rgba(0, 255, 255, 0.15); /* Daha belirgin */
+  border-left: 6px solid #00fff7; /* Daha kalın kenarlık */
+  padding: 25px 30px; /* Daha dolgun */
+  margin: 25px 0;
+  border-radius: 18px; /* Daha kavisli */
+  box-shadow:
+    0 0 20px #00fff7aa,
+    inset 0 0 8px #00fff7aa;
+  cursor: default;
+  transition: background 0.5s ease, box-shadow 0.5s ease, transform 0.3s ease;
+  user-select: none;
+  opacity: 0; /* Başlangıçta gizli */
+  transform: translateY(20px); /* Alttan giriş */
+  animation: slideIn 0.6s ease-out forwards;
+}
+.news-item:hover {
+  background: rgba(0, 255, 255, 0.28); /* Hover'da daha belirgin */
+  box-shadow:
+    0 0 40px #00fff7cc,
+    inset 0 0 15px #00fff7cc;
+  transform: translateY(0) scale(1.01);
+}
+.news-item:nth-child(even) { /* Çift sıralı haberler için farklı renk tonu */
+  border-left-color: #0ff;
+  background: rgba(0, 255, 255, 0.12);
+}
+
+.news-title {
+  font-weight: 700;
+  font-size: 1.55rem; /* Daha büyük */
+  margin-bottom: 10px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 8px #00fff7aa;
+}
+.news-desc {
+  font-size: 1.1rem; /* Daha okunaklı */
+  color: #b0e8f7;
+  line-height: 1.5;
+}
+
+/* --- Results GRID --- */
+#results {
+  margin-top: 25px;
+  display: grid; /* Grid düzenine geçiş */
+  grid-template-columns: repeat(auto-fit, minmax(370px, 1fr)); /* Her satırda 2 öğe (min 350px) */
+  row-gap: 30px;
+  column-gap: 30px;
+  justify-content: center; /* Ortala */
+  align-items: start; /* Öğeleri en üste hizala */
+}
+
+.result-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-left: 6px solid #00ffff;
+  border-radius: 15px;
+  padding: 22px 28px;
+  margin: 0;
+  color: #e0f7fa;
+  box-shadow:
+    0 0 15px #00fff7aa;
+  transition: box-shadow 0.4s ease, transform 0.3s ease, background 0.4s ease;
+  user-select: text;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.6s ease-out forwards;
+  min-height: 120px; /* Minimum yüksekliği korumak isterseniz */
+
+
+  aspect-ratio: 2 / 1; /* Genişliğin yüksekliğe oranı 2:1 (örneğin 700px genişlikte 350px yükseklik sağlar) */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.result-box:hover {
+  box-shadow:
+    0 0 28px #00ffffcc;
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.15);
+}
+.result-box h3 {
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 1.35rem;
+  text-shadow: 0 0 10px #00fff7cc;
+}
+.result-box p {
+  font-size: 1.05rem;
+  color: #aadcee;
+  line-height: 1.6;
+  flex-grow: 1; /* Paragrafın boşluğu doldurmasını sağla */
+}
+.result-box a {
+  color: #0ff;
+  text-decoration: none;
+  font-weight: 600;
+  font-style: italic;
+  display: inline-block;
+  margin-top: 8px;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+.result-box a:hover {
+  color: #00fff7;
+  text-decoration: underline;
+}
+
+/* Loader & Mesajlar */
+#loader { /* Sadece haber yükleyici aktif kalacak */
+  text-align: center;
+  font-weight: 800;
+  color: #00fff7;
+  font-size: 1.3rem;
+  margin-top: 30px;
+  display: none;
+  user-select: none;
+  text-shadow:
+    0 0 8px #00fff7aa;
+  animation: pulse 1.5s infinite alternate;
+}
+#searchLoader { /* Arama loader'ı */
+  text-align: center;
+  font-weight: 800;
+  color: #00fff7;
+  font-size: 1.3rem;
+  margin-top: 30px;
+  display: none; /* Başlangıçta gizli */
+  user-select: none;
+  text-shadow:
+    0 0 8px #00fff7aa;
+  animation: pulse 1.5s infinite alternate;
+}
+
+.info-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #b0e8f7;
+  margin-top: 40px;
+  padding: 20px;
+  background: rgba(0, 255, 247, 0.1);
+  border-radius: 15px;
+  border: 1px solid rgba(0, 255, 247, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 247, 0.2);
+  animation: fadeIn 0.8s ease-out;
+  grid-column: 1 / -1; /* Mesajın tüm satırı kaplaması için */
+}
+
+/* Anahtar Kare Animasyonları */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  from { opacity: 0.7; text-shadow: 0 0 8px #00fff7aa; }
+  to { opacity: 1; text-shadow: 0 0 15px #00fff7ff; }
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+  header {
+    height: 60px;
+    padding: 0 20px;
+  }
+  header.shrink {
+    height: 50px;
+  }
+  header h1 {
+    font-size: 1.5rem;
+    letter-spacing: 0.1em;
+  }
+  header.shrink h1 {
+    font-size: 1.3rem;
+  }
+  #fixedSearch {
+    top: 60px;
+    padding: 15px 0;
+  }
+  header.shrink + #fixedSearch {
+    top: 50px;
+    padding: 10px 0;
+  }
+  main {
+    margin: calc(60px + 60px + 20px) auto 40px; /* Yeni hesaplama */
+    padding: 0 15px;
+  }
+  header.shrink + #fixedSearch + main {
+    margin-top: calc(50px + 50px + 10px);
+  }
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+  .news-title {
+    font-size: 1.3rem;
+  }
+  .news-desc {
+    font-size: 1rem;
+  }
+  .search-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  #searchInput {
+    width: 100%;
+    flex: none;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+  }
+  button.search-btn {
+    width: 100%;
+    font-size: 1rem;
+  }
+  #trending-topics {
+    padding: 20px;
+    margin-bottom: 40px;
+  }
+  #trending-topics h2 {
+    font-size: 1.5rem;
+  }
+  /* Responsive: Grid 1 sütuna düşer */
+  #results {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .suggestion-box {
+    width: calc(100% - 30px); /* Mobil görünümde daha geniş */
+    max-width: none; /* Max genişliği kaldır */
+    top: calc(16px + 22px + 10px + 14px); /* Mobil için top değerini ayarla */
+  }
+}
+
+@media(max-width: 480px) {
+  header h1 {
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+  }
+  header.shrink h1 {
+    font-size: 1.1rem;
+  }
+  #fixedSearch {
+    top: 60px;
+    padding: 10px 0;
+  }
+  header.shrink + #fixedSearch {
+    top: 50px;
+    padding: 5px 0;
+  }
+  main {
+    margin: calc(60px + 50px + 10px) auto 30px; /* Yeni hesaplama */
+  }
+  header.shrink + #fixedSearch + main {
+    margin-top: calc(50px + 40px + 5px);
+  }
+  .section-title {
+    font-size: 1.5rem;
+  }
+  .news-item {
+    padding: 20px 20px;
+    margin: 20px 0;
+  }
+  .news-title {
+    font-size: 1.15rem;
+  }
+  .news-desc {
+    font-size: 0.9rem;
+  }
+  #searchInput {
+    font-size: 1rem;
+    padding: 14px 18px;
+  }
+  button.search-btn {
+    font-size: 0.9rem;
+    padding: 14px 25px;
+  }
+  #trending-topics h2 {
+    font-size: 1.3rem;
+  }
+  .trend-tag {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+  }
+}
